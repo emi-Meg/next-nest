@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Backend (NestJS with Fastify)
+  server:
+    # volumes:
+    #   - ./server:/app
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: server
+    ports:
+      - "3011:3011"
+    # environment:
+      # - DATABASE_URL=postgresql://user:password@postgres:5432/dbname
+      # - REDIS_URL=redis://redis:6379
+      # How to generate:
+      #  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+      # - JWT_SECRET=
+    # depends_on:
+    #   - postgres
+    #   - redis
+    networks:
+      - app-network
+
+  # Frontend (Next.js)
+  client:
+    # volumes:
+    #   - ./client:/app
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - "3010:3010"
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+#  # PostgreSQL with Citus extension
+#   postgres:
+#     image: citusdata/citus:latest
+#     container_name: postgres-db
+#     environment:
+#       POSTGRES_PASSWORD: smct123456
+#       POSTGRES_USER: admin
+#       POSTGRES_DB: nestdb
+#     volumes:
+#       - postgres-data:/var/lib/postgresql/data
+#     networks:
+#       - app-network
+
+#   # Redis for caching and session management
+#   redis:
+#     image: redis:alpine
+#     container_name: redis
+#     networks:
+#       - app-network
+
+# volumes:
+#   postgres-data:
+
+networks:
+  app-network:
+    driver: bridge

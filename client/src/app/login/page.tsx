@@ -3,15 +3,15 @@
 import { useState } from 'react';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [username, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch('/api/login', {
+    const response = await fetch('http://localhost:3011/users/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ username, password }),
     });
     const data = await response.json();
     alert(data.message);
@@ -22,7 +22,7 @@ export default function LoginPage() {
       <input
         type="email"
         placeholder="Email"
-        value={email}
+        value={username}
         onChange={(e) => setEmail(e.target.value)}
         required
       />

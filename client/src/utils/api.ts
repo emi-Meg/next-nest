@@ -1,6 +1,19 @@
-import { NextResponse } from 'next/server';
+export const API_URL = 'http://localhost:3000';
 
-export async function POST(req: Request) {
-  const { email, password } = await req.json();
-  return NextResponse.json({ message: `Logged in as ${email}` });
+export async function login(email: string, password: string) {
+  const response = await fetch(`${API_URL}/users/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  return response.json();
+}
+
+export async function register(email: string, password: string) {
+  const response = await fetch(`${API_URL}/users/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  return response.json();
 }

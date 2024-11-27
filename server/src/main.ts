@@ -1,11 +1,19 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { FastifyAdapter } from '@nestjs/platform-fastify';
-import { ValidationPipe } from '@nestjs/common';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+import { UsersModule } from './users/users.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, new FastifyAdapter());
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  await app.listen(3000);
+  const app = await NestFactory.create<NestFastifyApplication>(
+    UsersModule,
+    new FastifyAdapter(),
+  );
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  });
+  await app.listen(3011, '0.0.0.0');
 }
 bootstrap();

@@ -6,7 +6,7 @@ export default function DashboardPage() {
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:3001');
+    const ws = new WebSocket('ws://localhost:3002');
     ws.onmessage = (event) => {
       setMessages((prev) => [...prev, event.data]);
     };
